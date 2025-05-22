@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException, File, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Dict, Any, Optional
 from ..rag.qdrant_handler import QdrantHandler, Distance
@@ -12,6 +13,14 @@ from ..config import FastAPIConfig
 load_dotenv()
 
 app = FastAPI(title="FLARE API", description="API for FLARE RAG system")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],            # 允許的來源
+    allow_credentials=True,
+    allow_methods=["*"],              # 允許所有方法，如 GET、POST、PUT、DELETE
+    allow_headers=["*"],              # 允許所有 headers
+)
 
 # 初始化 QdrantHandler
 qdrant_handler = QdrantHandler(host=os.getenv("QDRANT_HOST"), port=os.getenv("QDRANT_PORT"))

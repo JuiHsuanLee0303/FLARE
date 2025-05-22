@@ -5,63 +5,113 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FLARE RAG 系統</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
     <div class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold mb-8 text-center">FLARE RAG 系統</h1>
+        <h1 class="text-3xl font-bold mb-8 text-center text-indigo-600">FLARE RAG 系統</h1>
         
-        <!-- 集合管理部分 -->
-        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-            <h2 class="text-xl font-semibold mb-4">集合管理</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <h3 class="font-medium mb-2">創建新集合</h3>
-                    <form id="createCollectionForm" class="space-y-4">
-                        <input type="text" id="collectionName" placeholder="集合名稱" class="w-full p-2 border rounded">
-                        <input type="number" id="vectorSize" placeholder="向量大小" value="1024" class="w-full p-2 border rounded">
-                        <select id="distance" class="w-full p-2 border rounded">
-                            <option value="COSINE">餘弦相似度</option>
-                            <option value="EUCLID">歐氏距離</option>
-                        </select>
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">創建集合</button>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- 左側面板：集合管理和向量操作 -->
+            <div class="lg:col-span-2 space-y-8">
+                <!-- 集合管理部分 -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-800">集合管理</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <h3 class="font-medium mb-2 text-gray-700">創建新集合</h3>
+                            <form id="createCollectionForm" class="space-y-4">
+                                <input type="text" id="collectionName" placeholder="集合名稱" class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                <input type="number" id="vectorSize" placeholder="向量大小" value="1024" class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                <select id="distance" class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                    <option value="COSINE">餘弦相似度</option>
+                                    <option value="EUCLID">歐氏距離</option>
+                                </select>
+                                <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600 transition-colors duration-200">創建集合</button>
+                            </form>
+                        </div>
+                        <div>
+                            <h3 class="font-medium mb-2 text-gray-700">集合列表</h3>
+                            <div id="collectionsList" class="border rounded p-4 h-48 overflow-y-auto bg-gray-50"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 文件上傳部分 -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-800">文件上傳</h2>
+                    <form id="uploadForm" class="space-y-4">
+                        <div class="flex items-center space-x-4">
+                            <select id="uploadCollectionSelect" class="flex-1 p-2 border rounded focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"></select>
+                            <input type="number" id="chunkSize" placeholder="分塊大小" value="1000" class="w-32 p-2 border rounded focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <input type="number" id="chunkOverlap" placeholder="重疊大小" value="200" class="w-32 p-2 border rounded focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <input type="file" id="fileInput" class="flex-1 p-2 border rounded focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-200">
+                                <i class="fas fa-upload mr-2"></i>上傳
+                            </button>
+                        </div>
                     </form>
                 </div>
-                <div>
-                    <h3 class="font-medium mb-2">集合列表</h3>
-                    <div id="collectionsList" class="border rounded p-4 h-48 overflow-y-auto"></div>
+
+                <!-- 向量操作部分 -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-800">向量操作</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <h3 class="font-medium mb-2 text-gray-700">添加向量</h3>
+                            <form id="addVectorForm" class="space-y-4">
+                                <select id="addCollectionSelect" class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"></select>
+                                <textarea id="chunkText" placeholder="輸入文本" class="w-full p-2 border rounded h-32 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors duration-200">添加向量</button>
+                            </form>
+                        </div>
+                        <div>
+                            <h3 class="font-medium mb-2 text-gray-700">搜索向量</h3>
+                            <form id="searchVectorForm" class="space-y-4">
+                                <select id="searchCollectionSelect" class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"></select>
+                                <input type="text" id="searchQuery" placeholder="搜索查詢" class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                <input type="number" id="searchLimit" placeholder="結果數量" value="10" class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                <button type="submit" class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition-colors duration-200">搜索</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 搜索結果顯示區域 -->
+                <div id="searchResults" class="bg-white rounded-lg shadow-md p-6 hidden">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-800">搜索結果</h2>
+                    <div id="resultsList" class="space-y-4"></div>
+                </div>
+
+                <!-- 集合信息顯示區域 -->
+                <div id="collectionInfo" class="bg-white rounded-lg shadow-md p-6 hidden">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-800">集合信息</h2>
+                    <div id="infoContent" class="space-y-4"></div>
                 </div>
             </div>
-        </div>
 
-        <!-- 向量操作部分 -->
-        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-            <h2 class="text-xl font-semibold mb-4">向量操作</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <h3 class="font-medium mb-2">添加向量</h3>
-                    <form id="addVectorForm" class="space-y-4">
-                        <select id="addCollectionSelect" class="w-full p-2 border rounded"></select>
-                        <textarea id="chunkText" placeholder="輸入文本" class="w-full p-2 border rounded h-32"></textarea>
-                        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">添加向量</button>
-                    </form>
-                </div>
-                <div>
-                    <h3 class="font-medium mb-2">搜索向量</h3>
-                    <form id="searchVectorForm" class="space-y-4">
-                        <select id="searchCollectionSelect" class="w-full p-2 border rounded"></select>
-                        <input type="text" id="searchQuery" placeholder="搜索查詢" class="w-full p-2 border rounded">
-                        <input type="number" id="searchLimit" placeholder="結果數量" value="10" class="w-full p-2 border rounded">
-                        <button type="submit" class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600">搜索</button>
-                    </form>
+            <!-- 右側面板：聊天對話框 -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow-md h-[calc(100vh-12rem)] flex flex-col">
+                    <div class="p-4 border-b">
+                        <h2 class="text-xl font-semibold text-gray-800">聊天對話</h2>
+                    </div>
+                    <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-4">
+                        <!-- 聊天消息將在這裡動態添加 -->
+                    </div>
+                    <div class="p-4 border-t">
+                        <form id="chatForm" class="flex space-x-2">
+                            <input type="text" id="chatInput" placeholder="輸入您的問題..." class="flex-1 p-2 border rounded focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600 transition-colors duration-200">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <!-- 搜索結果顯示區域 -->
-        <div id="searchResults" class="bg-white rounded-lg shadow-md p-6 hidden">
-            <h2 class="text-xl font-semibold mb-4">搜索結果</h2>
-            <div id="resultsList" class="space-y-4"></div>
         </div>
     </div>
 

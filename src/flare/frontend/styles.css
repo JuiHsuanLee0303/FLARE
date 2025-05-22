@@ -32,19 +32,83 @@
     background-color: #FEE2E2;
 }
 
+/* 聊天消息樣式 */
+.chat-message {
+    max-width: 80%;
+    padding: 0.75rem 1rem;
+    border-radius: 1rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+    animation: slideIn 0.3s ease-out;
+}
+
+.chat-message.user {
+    background-color: #EEF2FF;
+    color: #1E40AF;
+    margin-left: auto;
+    border-bottom-right-radius: 0.25rem;
+}
+
+.chat-message.bot {
+    background-color: #F3F4F6;
+    color: #374151;
+    margin-right: auto;
+    border-bottom-left-radius: 0.25rem;
+}
+
+.chat-message .timestamp {
+    font-size: 0.75rem;
+    color: #6B7280;
+    margin-top: 0.25rem;
+    text-align: right;
+}
+
 /* 動畫效果 */
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
 }
 
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .fade-in {
     animation: fadeIn 0.3s ease-in;
+}
+
+/* 滾動條樣式 */
+#chatMessages::-webkit-scrollbar {
+    width: 6px;
+}
+
+#chatMessages::-webkit-scrollbar-track {
+    background: #F3F4F6;
+}
+
+#chatMessages::-webkit-scrollbar-thumb {
+    background-color: #D1D5DB;
+    border-radius: 3px;
+}
+
+#chatMessages::-webkit-scrollbar-thumb:hover {
+    background-color: #9CA3AF;
 }
 
 /* 響應式調整 */
 @media (max-width: 768px) {
     .container {
         padding: 1rem;
+    }
+    
+    .chat-message {
+        max-width: 90%;
     }
 } 
