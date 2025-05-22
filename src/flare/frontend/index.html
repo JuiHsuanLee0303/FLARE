@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLARE RAG 系統</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-8 text-center">FLARE RAG 系統</h1>
+        
+        <!-- 集合管理部分 -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">集合管理</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <h3 class="font-medium mb-2">創建新集合</h3>
+                    <form id="createCollectionForm" class="space-y-4">
+                        <input type="text" id="collectionName" placeholder="集合名稱" class="w-full p-2 border rounded">
+                        <input type="number" id="vectorSize" placeholder="向量大小" value="1024" class="w-full p-2 border rounded">
+                        <select id="distance" class="w-full p-2 border rounded">
+                            <option value="COSINE">餘弦相似度</option>
+                            <option value="EUCLID">歐氏距離</option>
+                        </select>
+                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">創建集合</button>
+                    </form>
+                </div>
+                <div>
+                    <h3 class="font-medium mb-2">集合列表</h3>
+                    <div id="collectionsList" class="border rounded p-4 h-48 overflow-y-auto"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 向量操作部分 -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">向量操作</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <h3 class="font-medium mb-2">添加向量</h3>
+                    <form id="addVectorForm" class="space-y-4">
+                        <select id="addCollectionSelect" class="w-full p-2 border rounded"></select>
+                        <textarea id="chunkText" placeholder="輸入文本" class="w-full p-2 border rounded h-32"></textarea>
+                        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">添加向量</button>
+                    </form>
+                </div>
+                <div>
+                    <h3 class="font-medium mb-2">搜索向量</h3>
+                    <form id="searchVectorForm" class="space-y-4">
+                        <select id="searchCollectionSelect" class="w-full p-2 border rounded"></select>
+                        <input type="text" id="searchQuery" placeholder="搜索查詢" class="w-full p-2 border rounded">
+                        <input type="number" id="searchLimit" placeholder="結果數量" value="10" class="w-full p-2 border rounded">
+                        <button type="submit" class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600">搜索</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 搜索結果顯示區域 -->
+        <div id="searchResults" class="bg-white rounded-lg shadow-md p-6 hidden">
+            <h2 class="text-xl font-semibold mb-4">搜索結果</h2>
+            <div id="resultsList" class="space-y-4"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

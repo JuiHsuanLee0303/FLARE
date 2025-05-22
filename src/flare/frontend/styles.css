@@ -1,0 +1,50 @@
+/* 自定義樣式 */
+.result-item {
+    border-left: 4px solid #4F46E5;
+    transition: all 0.3s ease;
+}
+
+.result-item:hover {
+    background-color: #F3F4F6;
+}
+
+.collection-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.collection-item:last-child {
+    border-bottom: none;
+}
+
+.delete-btn {
+    color: #EF4444;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease;
+}
+
+.delete-btn:hover {
+    background-color: #FEE2E2;
+}
+
+/* 動畫效果 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+/* 響應式調整 */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+} 
