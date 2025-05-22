@@ -17,3 +17,12 @@
 
 .venv
 /poetry.toml
+
+tmp/*
+
+lora_model/*
+
+.env
+.env.local
+.env.development
+.env.production
